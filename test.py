@@ -1,0 +1,7 @@
+a = set([])
+a.add(1)
+a.add(2)
+a.add(1)
+print(a)
+print(1 in a)
+print(3 in a)
