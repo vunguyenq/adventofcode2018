@@ -3,10 +3,10 @@ exec_part = 1 # which part to execute
 exec_test_case = 1 # 1 = test input; 0 = real puzzle input
 
 # Puzzle input
-with open('input/INPUT_TEST_FILE.txt') as f:
+with open('input/input_test01.txt') as f:
     INPUT_TEST = f.read()
 
-with open('input/INPUT_REAL_FILE.txt') as f:
+with open('input/input01.txt') as f:
     INPUT = f.readlines()   
 
 def parse_input(input):
