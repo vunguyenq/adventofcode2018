@@ -1,7 +1,5 @@
-a = set([])
-a.add(1)
-a.add(2)
-a.add(1)
-print(a)
-print(1 in a)
-print(3 in a)
+b1 = 'abcde'
+b2 = 'abcfe'
+for i in range(len(b1)):
+    print(b1[i],b2[i])
+                        
