@@ -7,13 +7,12 @@ with open('input/INPUT_TEST_FILE.txt') as f:
     INPUT_TEST = f.read()
 
 with open('input/INPUT_REAL_FILE.txt') as f:
-    INPUT = f.readlines()   
+    INPUT = f.read()   
 
 def parse_input(input):
     return input.split('\n')
 
 def part1(input):
-    print(input)
     result = 0
     return result
 

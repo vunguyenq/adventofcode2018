@@ -2,6 +2,7 @@ test_param:
 	echo $(param)
 
 help:
+	echo Run make on a BASH shell
 	echo Create new day code: make create dayname="01 day1_title"
 	echo delete day: make delete day=01
 
