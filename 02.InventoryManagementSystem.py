@@ -42,8 +42,8 @@ def part2(input):
     for key in all_keys:
         # because there is only 1 letter different, ascii key of 2 correct box id must be within the range of +- 26
         # list is sorted => only need to look forward
-        candidate_boxes_keys = [k for k in all_keys if k > key and k < key + 26]
-        for candidate_key in candidate_boxes_keys:
+        candidate_box_keys = [k for k in all_keys if k > key and k < key + 26]
+        for candidate_key in candidate_box_keys:
             boxes_1 = box_dict[key]
             boxes_2 = box_dict[candidate_key]
             for b1 in boxes_1:
