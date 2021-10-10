@@ -73,6 +73,6 @@ class SimpleFrame:
         for i in range(100):
             self.reset_background()
             self.display_text(str(i), 200, 200)
-            self.draw_tile((i,i), (255,0,0))
+            self.draw_tile((i,i%20), (255,0,0))
             self.refresh()
             self.check_closed()
