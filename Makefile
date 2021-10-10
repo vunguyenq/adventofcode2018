@@ -1,3 +1,5 @@
+.SILENT: help
+
 test_param:
 	echo $(param)
 
