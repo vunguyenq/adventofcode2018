@@ -1,6 +1,6 @@
 import datetime
 import pandas as pd
-exec_part = 1 # which part to execute
+exec_part = 2 # which part to execute
 exec_test_case = 0 # 1 = test input; 0 = real puzzle input
 
 # Puzzle input
@@ -53,8 +53,24 @@ def part1(input):
     return int(selected_guard) * most_common_minute
 
 def part2(input):
-    result = 0
-    return result
+    # Parse events
+    df_log = input
+    guard_minute = []
+    for i, row in df_log.iterrows():
+        ts, event = row['ts'], row['event']
+        if ("begins shift" in event):
+            current_guard = int(event.split()[1][1:])
+        if ("falls asleep" in event):
+            from_min = ts.minute
+        if ("wakes up" in event):
+            to_min = ts.minute
+            for m in range(from_min, to_min):
+                guard_minute.append((current_guard, m))
+    
+     # Find most common guard-minute    
+    most_common_minute = max(set(guard_minute), key = guard_minute.count)
+    print(f"Most common guard - sleeping minutes: {most_common_minute}")
+    return most_common_minute[0] * most_common_minute[1]
 
 if __name__ == "__main__":
     if(exec_test_case == 1):
