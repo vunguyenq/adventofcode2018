@@ -1,4 +1,5 @@
 import datetime
+from multiprocessing import Pool
 
 exec_part = 2 # which part to execute
 exec_test_case = 0 # 0 = test input; 0 = real puzzle input
@@ -37,20 +38,34 @@ def part1(input):
             break
     return len(polymer)
 
+# Function to remove a unit (a/A) from polymer, reduce the polymer and return length after reduce
+# To be executed in a single thread
+def remove_unit(thread_input):
+    polymer, c, i = thread_input
+    removed_units = (c, chr(ord(c)-32))
+    polymer_copy = [u for u in polymer.copy() if u not in removed_units]
+    print(f"Pass {i} - removed unit {removed_units}. Polymer length without this unit: {len(polymer_copy)}. Reducing...")
+    reduced_length = part1(["".join(polymer_copy)])
+    return reduced_length
+
 def part2(input):
     unique_chars = set(input[0].lower())
     polymer = list(input[0])
     min_lenght = len(polymer)
     print(f"Polymer lenght: {min_lenght}")
     print(f"Number of unit type: {len(unique_chars)}")
-    for i, c in enumerate(unique_chars):
-        removed_units = (c, chr(ord(c)-32))
-        polymer_copy = [u for u in polymer.copy() if u not in removed_units]
-        print(f"Pass {i+1} - removing unit {removed_units}. Polymer length without this unit: {len(polymer_copy)}")
-        reduced_length = part1(["".join(polymer_copy)])
-        print(f"...Length after reduce: {reduced_length}")
-        min_lenght = min(min_lenght, reduced_length)
-    return min_lenght
+
+    # Prepare inputs for parallel threads
+    thread_inputs = []
+    for i,c in enumerate(unique_chars):
+        thread_inputs.append((polymer, c, i))
+
+    # Parallel process each unique character
+    # https://docs.python.org/3/library/multiprocessing.html
+    # Laptop has 8 logical processor (4 cores) => 8 threads at a time
+    with Pool(8) as p:
+        lengths_after_reduce = p.map(remove_unit, thread_inputs)
+    return min(lengths_after_reduce)
 
 if __name__ == "__main__":
     if(exec_test_case == 1):
