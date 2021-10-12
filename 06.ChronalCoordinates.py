@@ -1,7 +1,7 @@
 import datetime
 import numpy as np
 
-exec_part = 1 # which part to execute
+exec_part = 2 # which part to execute
 exec_test_case = 0 # 1 = test input; 0 = real puzzle input
 
 # Puzzle input
@@ -14,10 +14,11 @@ with open('input/input06.txt') as f:
 def parse_input(input):
     return [tuple(map(int, s.split(", "))) for s in input.split('\n')]
 
+# Calculate Manhattan distance between 2 points
 def manhattan_dist(x, y):
     return abs(y[0] - x[0]) + abs(y[1] - x[1])
 
-# Return maximum 2 points closest to a given point
+# Part 1: Find points closest to a given point
 def find_closest_points(given_point, points):
     first_point = points.pop()
     closest_points = [first_point]
@@ -30,6 +31,10 @@ def find_closest_points(given_point, points):
         elif dist == closest_dist: 
             closest_points.append(point)
     return closest_points
+
+# Part 2: Calculate sum of Manhattan from a given point to a list of points
+def sum_dist(given_point, points):
+    return sum([manhattan_dist(given_point, point) for point in points])
 
 def part1(input):
     # Give each point an id
@@ -52,7 +57,7 @@ def part1(input):
             else: 
                 np_area[matrix_cor[0], matrix_cor[1]] = cor_ids[closest_points[0]]
     
-    # Get cor_id appears in matrix edges:
+    # Get cor_id appears in matrix edges
     edge_cor_ids = []
     for edge in [np_area[0,:], np_area[1:,-1], np_area[-1,:-1], np_area[1:-1,0]]:
         edge_cor_ids.extend(edge.tolist()) 
@@ -74,8 +79,19 @@ def part1(input):
     return max_area_size
 
 def part2(input):
-    result = 0
-    return result
+    # Find rectangular (x,y) boundaries of non-infinity areas
+    lx, ly = zip(*input)
+    min_x, max_x, min_y, max_y = min(lx), max(lx), min(ly), max(ly)
+    # Scan each location within these boundaries
+    safe_area_size = 0
+    safe_dist_threshold = 10000 # 32 test, 10000 real
+    for x in range(min_x, max_x + 1):
+        for y in range(min_y, max_y + 1):
+            current_cor = (x,y)
+            total_dist = sum_dist(current_cor, input)
+            if total_dist < safe_dist_threshold:
+                safe_area_size += 1
+    return safe_area_size
 
 if __name__ == "__main__":
     if(exec_test_case == 1):
