@@ -1,4 +1,6 @@
-# adventofcode2018
+# Code repository for coding challenge adventofcode2018  
+https://adventofcode.com/2018
+
 Run make on a BASH shell.  
   
 Create new day code:  
