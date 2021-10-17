@@ -3,3 +3,5 @@ Day 07: Visualize directed graph with networkx
         Find predecessors, successors of a given node in a directed graph
 Day 08: Create, interact & visualize tree data structure with treelib
         Recursion
+Day 09: High-performance inserts into beginning/ middle of large lists (7M members) 
+        using blist instead of standard Python list http://stutzbachenterprises.com/blist/blist.html

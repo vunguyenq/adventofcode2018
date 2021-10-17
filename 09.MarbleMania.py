@@ -1,6 +1,7 @@
 import datetime
+from blist import *
 
-exec_part = 1 # which part to execute
+exec_part = 2 # which part to execute
 exec_test_case = 0 # -1 = all test inputs, n = n_th test input; 0 = real puzzle input
 
 # Puzzle input
@@ -15,7 +16,7 @@ def parse_input(input):
 
 class MarbleCirle:
     def __init__(self, no_of_players):
-        self.marble_list = [0]
+        self.marble_list = blist([0])
         self.current_marble = 0
         self.current_player = 0
         self.no_of_players = no_of_players
@@ -32,7 +33,7 @@ class MarbleCirle:
 
     def add_regular_marble(self, marble_value):
         self.current_marble = self.get_next_n_marble_pos(2)
-        self.marble_list = self.marble_list[:self.current_marble] + [marble_value] + self.marble_list[self.current_marble:]
+        self.marble_list.insert(self.current_marble, marble_value)
 
     def take_turn(self):
         self.move_no += 1
@@ -51,25 +52,27 @@ class MarbleCirle:
         print(f"Player: {self.current_player}. Last marble point: {self.max_marble_point}. Circle: {self.marble_list[start_pos:] + self.marble_list[0:start_pos]}")
             
 
-
+# Changing from standard Python list to blist (http://stutzbachenterprises.com/blist/blist.html), performance of part 1 improves from 15s to 0.1s
 def part1(input):
     no_players, last_marble_worth = input
-    print(input)
     circle = MarbleCirle(no_players)
     for i in range(last_marble_worth + 1):
         circle.take_turn()
         #circle.print_circle()
         # Progress tracking
-        if (i%1000) == 0:
+        if (i%10000) == 0:
             print(f"{i}/{last_marble_worth}")
     return max(circle.scores)
 
 def part2(input):
     no_players, last_marble_worth = input
-    print(input)
     circle = MarbleCirle(no_players)
+    last_marble_worth = last_marble_worth*100
     for i in range(last_marble_worth + 1):
         circle.take_turn()
+        # Progress tracking
+        if (i%100000) == 0:
+            print(f"{i}/{last_marble_worth}")
     return max(circle.scores)
 
 if __name__ == "__main__":
