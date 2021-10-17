@@ -12,12 +12,12 @@ Delete day code:
 If there is more than 1 test case, sepearte test cases in file <code>input_testxx.txt</code> with <code>#####INPUT_SEPERATOR#####</code>.  
 Example - <code>input_test01.txt</code> with 3 test cases:  
 <code>
-1 2
-3 4
-#####INPUT_SEPERATOR#####  
-5 6
-7 8
-#####INPUT_SEPERATOR#####  
-9 10
-11 12
-</code>
+1 2  
+3 4  
+#####INPUT_SEPERATOR#####    
+5 6  
+7 8  
+#####INPUT_SEPERATOR#####   
+9 10  
+11 12  
+</code>  
