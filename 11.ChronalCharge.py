@@ -2,7 +2,7 @@ import datetime
 import numpy as np
 
 exec_part = 2 # which part to execute
-exec_test_case = 1 # -1 = all test inputs, n = n_th test input; 0 = real puzzle input
+exec_test_case = 0 # -1 = all test inputs, n = n_th test input; 0 = real puzzle input
 
 # Puzzle input
 with open('input/input_test11.txt') as f:
@@ -35,8 +35,26 @@ def part1(input):
     return ','.join(list(map(str,coor)))
 
 def part2(input):
-    result = 0
-    return result
+    S = input
+    grid = np.zeros([300,300], dtype=int)
+    for i in range(300):
+        for j in range(300):
+            grid[i][j] = power_level_cell(i+1, j+1, S)
+    
+    max_pow, coor, max_size = 0, (0,0), 0
+    for size in range (1,300):
+        for i in range(300 - size):
+            for j in range(300 - size):
+                total_pow = np.sum(grid[i:i+size, j:j+size])
+                if max_pow < total_pow:
+                    max_pow = total_pow
+                    coor = (i+1, j+1)
+                    max_size = size
+        if size % 10 == 0: # Progress tracking
+            print(f"Processing square size {size}...")
+
+    print(f"The largest total square (with a total power of {max_pow}) is {max_size}x{max_size} and has a top-left corner of {coor})")
+    return ','.join(list(map(str,coor)) + [str(max_size)])
 
 if __name__ == "__main__":
     if(exec_test_case == 0):
