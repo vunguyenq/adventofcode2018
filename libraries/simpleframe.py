@@ -7,6 +7,7 @@ GREEN = (0,255,0)
 BLUE = (0,0,255)
 RED = (255,0,0)
 WHITE = (255, 255, 255)
+MAGENTA = (255,0,255)
 
 # This class draws dynamic frame with pixels of size tile_size x tile_size. Coordinates (left, top) = (0,0)
 class SimpleFrame:

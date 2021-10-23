@@ -6,3 +6,4 @@ Day 08: Create, interact & visualize tree data structure with treelib
 Day 09: High-performance inserts into beginning/ middle of large lists (7M members) 
         using blist instead of standard Python list http://stutzbachenterprises.com/blist/blist.html
 Day 10: Recap - 2d graphic with pygame
+Day 13: Sort list of objects by properties
