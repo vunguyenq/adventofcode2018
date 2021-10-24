@@ -1,0 +1,7 @@
+9
+#####INPUT_SEPERATOR#####
+5
+#####INPUT_SEPERATOR#####
+18
+#####INPUT_SEPERATOR#####
+2018
