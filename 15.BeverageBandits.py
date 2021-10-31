@@ -3,7 +3,7 @@ import networkx as nx
 import numpy as np
 
 exec_part = 1 # which part to execute
-exec_test_case = -1 # -1 = all test inputs, n = n_th test input; 0 = real puzzle input
+exec_test_case = 0 # -1 = all test inputs, n = n_th test input; 0 = real puzzle input
 
 # Puzzle input
 with open('input/input_test15.txt') as f:
@@ -80,7 +80,7 @@ class Unit:
         return 'Attacked 1 enemy unit'
 
     def move(self, open_squares, units):
-        # 1 build up unit's own map: open_square + drop nodes that are occupied by an allied unit except for itself
+        # Build up unit's own map: open_square + drop nodes that are occupied by an allied unit except for itself
         # No need to drop enemies b/c unit will find nearest enemies anyway
         self_vision = open_squares.copy()
         enemies = []
@@ -92,7 +92,7 @@ class Unit:
             else:
                 self_vision.remove_node(tuple(u.pos))
     
-        # 2 Find shortest_path_length to each enemies & find nearest enemies
+        # Find nearest enemies
         nearest_enemies = []
         enemy_distance = 9999
         for e in enemies:
@@ -115,14 +115,30 @@ class Unit:
         if len(nearest_enemies) == 0: # No possible path to any enemies
             return False
         
+        # Find squares adjacent to nearest enemies; filter squares that are nearest to unit
+        enemy_pos = [tuple(e.pos) for e in enemies]
+        ad_squares = []
+        for e in nearest_enemies:
+            for ad in ADJACENTS:
+                ad_square = tuple(e.pos + np.array(ad)) 
+                if ad_square in self_vision.nodes and ad_square not in enemy_pos:
+                    distance_to_ad_square = nx.shortest_path_length(self_vision, source=tuple(self.pos), target=ad_square) 
+                    if distance_to_ad_square == min_distance - 1:
+                        ad_squares.append(ad_square)
+        
+        # If there are multiple nearest possible target squares, pick by reading order
+        ad_squares = list(set(ad_squares))
+        sorted_ad_squares = sorted(ad_squares, key = lambda x: (x[0], x[1]))
+        chosen_target = sorted_ad_squares[0]
+
+        # Move unit 1 step to chosen target square. If there is multiple paths, pick next step by reading ordre    
         for ad in ADJACENTS:
             new_pos = tuple(self.pos + np.array(ad)) 
             if new_pos in self_vision.nodes:
-                for e in nearest_enemies:
-                    new_distance = nx.shortest_path_length(self_vision, source=new_pos, target=tuple(e.pos))  
-                    if new_distance == min_distance - 1:
-                        self.pos = np.array(new_pos)
-                        return True
+                new_distance = nx.shortest_path_length(self_vision, source=new_pos, target=chosen_target)  
+                if new_distance == min_distance - 2:
+                    self.pos = np.array(new_pos)
+                    return True
         return None
 
     def attack(self, enemy):
@@ -165,9 +181,7 @@ def part1(input):
             #print(u.type, u.pos, next_action) 
         # Collect killed units & remove from list:
         units = [u for u in units if u.HP > 0]
-        #if print_round_result and round in print_rounds:
-        # TODO: Check 1st test case https://www.reddit.com/r/adventofcode/comments/a6r6kg/2018_day_15_part_1_what_am_i_missing/. Nearest destination squares (in range of nearest targets) must be in reading orders
-        if round == 1:
+        if print_round_result and round in print_rounds:
             print('')
             print(f"After {round} round(s):")
             print_map(walls, units)
