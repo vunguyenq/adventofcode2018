@@ -158,12 +158,7 @@ def print_map(walls, units):
         walls_print[row,col] = unit_type
     print('\n'.join([''.join([str(x) for x in row]) for row in walls_print]).replace('0','.').replace('1','#').replace('2','G').replace('3','E'))
 
-def part1(input):
-    walls, open_squares, units = input
-    
-    print_round_result = False # Set to True to print
-    print_rounds = range(38)#[34,35,36,37,38]
-
+def battle_outcome(walls, open_squares, units, print_round_result = False, print_rounds = [], progress_tracking = False):
     round = 0
     while(True):
         round += 1
@@ -175,7 +170,7 @@ def part1(input):
             if(next_action == 'No more enemies'):
                 full_rounds = round - 1
                 remaining_hp = sum([u.HP for u in units if u.HP > 0])
-                return f"Full round: {full_rounds}. HP of all remaining units: {remaining_hp}. Result: {full_rounds * remaining_hp}"
+                return (full_rounds, remaining_hp)
             if(next_action == 'Killed 1 enemy unit'): # dead unit has been removed from units
                 pass
             #print(u.type, u.pos, next_action) 
@@ -188,10 +183,19 @@ def part1(input):
             for u in units:
                 print(u.type, u.pos, u.HP)
         
-        # Progress tracking - real input only
-        if exec_test_case == 0:
+        # Progress tracking
+        if progress_tracking:
             print(f"Round {round}. Elf left: {len([u for u in units if u.type == 'E'])}; Goblins left: {len([u for u in units if u.type == 'G'])}")
-    return 0
+    return None
+
+def part1(input):
+    walls, open_squares, units = input
+    
+    print_round_result = False # Set to True to print
+    print_rounds = range(38)#[34,35,36,37,38]
+
+    (full_rounds, remaining_hp) = battle_outcome(walls, open_squares, units, print_round_result, print_rounds = [], progress_tracking = True)
+    return f"Full round: {full_rounds}. HP of all remaining units: {remaining_hp}. Result: {full_rounds * remaining_hp}"
 
 def part2(input):
     result = 0
