@@ -1,8 +1,9 @@
 import datetime
 import networkx as nx
 import numpy as np
+import copy 
 
-exec_part = 1 # which part to execute
+exec_part = 2 # which part to execute
 exec_test_case = 0 # -1 = all test inputs, n = n_th test input; 0 = real puzzle input
 
 # Puzzle input
@@ -158,6 +159,7 @@ def print_map(walls, units):
         walls_print[row,col] = unit_type
     print('\n'.join([''.join([str(x) for x in row]) for row in walls_print]).replace('0','.').replace('1','#').replace('2','G').replace('3','E'))
 
+# Simulate battle
 def battle_outcome(walls, open_squares, units, print_round_result = False, print_rounds = [], progress_tracking = False):
     round = 0
     while(True):
@@ -170,9 +172,7 @@ def battle_outcome(walls, open_squares, units, print_round_result = False, print
             if(next_action == 'No more enemies'):
                 full_rounds = round - 1
                 remaining_hp = sum([u.HP for u in units if u.HP > 0])
-                return (full_rounds, remaining_hp)
-            if(next_action == 'Killed 1 enemy unit'): # dead unit has been removed from units
-                pass
+                return (full_rounds, remaining_hp, [u for u in units if u.HP > 0])
             #print(u.type, u.pos, next_action) 
         # Collect killed units & remove from list:
         units = [u for u in units if u.HP > 0]
@@ -192,14 +192,31 @@ def part1(input):
     walls, open_squares, units = input
     
     print_round_result = False # Set to True to print
-    print_rounds = range(38)#[34,35,36,37,38]
+    print_rounds = [34,35,36,37,38]
 
-    (full_rounds, remaining_hp) = battle_outcome(walls, open_squares, units, print_round_result, print_rounds = [], progress_tracking = True)
-    return f"Full round: {full_rounds}. HP of all remaining units: {remaining_hp}. Result: {full_rounds * remaining_hp}"
+    (full_rounds, remaining_hp, _) = battle_outcome(walls, open_squares, units, print_round_result, print_rounds = [], progress_tracking = True)
+    return f"Full round: {full_rounds}. HP of all remaining units: {remaining_hp}. Battle outcome: {full_rounds * remaining_hp}"
 
 def part2(input):
-    result = 0
-    return result
+    walls, open_squares, units = input
+    elf_win_ap = 3 # Min attack power for elves to win without any death
+    elf_count = len([u for u in units if u.type == 'E'])
+    while(True):
+        # Upgrade attack power of elves
+        upgraded_units = copy.deepcopy(units)
+        for u in upgraded_units:
+            if u.type == 'E':
+                u.AP = elf_win_ap
+        # Start battle
+        (full_rounds, remaining_hp, remaining_units) = battle_outcome(walls, open_squares, upgraded_units)
+        remaining_elves = len([u for u in remaining_units if u.type == 'E'])
+        if exec_test_case == 0: # Progress tracking, only for real input
+            print(f"Elf attack power: {elf_win_ap}. Remaining elves after battle: {remaining_elves}")
+        if remaining_elves < elf_count:
+            elf_win_ap += 1
+        else:
+            break
+    return f"Elf attack power: {elf_win_ap}. Full round: {full_rounds}. HP of all remaining units: {remaining_hp}. Battle outcome: {full_rounds * remaining_hp}"
 
 if __name__ == "__main__":
     if(exec_test_case == 0):
