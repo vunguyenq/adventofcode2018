@@ -3,7 +3,7 @@ import networkx as nx
 import numpy as np
 
 exec_part = 1 # which part to execute
-exec_test_case = 0 # -1 = all test inputs, n = n_th test input; 0 = real puzzle input
+exec_test_case = -1 # -1 = all test inputs, n = n_th test input; 0 = real puzzle input
 
 # Puzzle input
 with open('input/input_test15.txt') as f:
@@ -131,7 +131,7 @@ class Unit:
 
 
 # Sort units by reading order
-def sort_units(units, walls):
+def sort_units1(units, walls):
     n_row, n_col = walls.shape
     sorted_units = []
     for i in range(n_row):
@@ -144,6 +144,10 @@ def sort_units(units, walls):
                     else:
                         break
     return None
+
+def sort_units(units):
+    sorted_units = sorted(units, key = lambda x: (x.pos[0], x.pos[1]))
+    return sorted_units
 
 def print_map(walls, units):
     walls_print = np.copy(walls)
@@ -162,7 +166,7 @@ def part1(input):
     round = 0
     while(True):
         round += 1
-        units = sort_units(units, walls)
+        units = sort_units(units)
         for u in units:
             if (u.HP < 0): # If unit is killed but not yet removed => no action
                 continue
