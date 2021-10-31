@@ -130,21 +130,6 @@ class Unit:
         return enemy.HP
 
 
-# Sort units by reading order
-def sort_units1(units, walls):
-    n_row, n_col = walls.shape
-    sorted_units = []
-    for i in range(n_row):
-        for j in range(n_col):
-            for u in units:
-                if tuple(u.pos) == (i,j):
-                    sorted_units.append(u)
-                    if (len(sorted_units) == len(units)):
-                        return(sorted_units)
-                    else:
-                        break
-    return None
-
 def sort_units(units):
     sorted_units = sorted(units, key = lambda x: (x.pos[0], x.pos[1]))
     return sorted_units
