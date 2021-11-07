@@ -1,5 +1,5 @@
 # Code repository for coding challenge adventofcode2018  
-Answers to Advent of Code 2018: https://adventofcode.com/2018
+This repository contains code and puzzle inputs for Advent of Code 2018: https://adventofcode.com/2018
 
 Run make on a BASH shell to create code template for each day challenge.  
   
