@@ -1,6 +1,4 @@
-import numpy as np
-a = np.array((1,3))
-b = np.array((4,8))
-print(a+b)
-print(tuple(a))
-print((a==b).all())
+a = set([1,2,3,4])
+b = set([2,4,5,6,7])
+c = a - b
+print(c)
