@@ -21,12 +21,15 @@ class VisualizaGround(SimpleFrame):
         n_row, n_col = ground_scan.shape
         for i in range(n_row):
             for j in range(n_col):
+                display_column = i // int(950/ self.tile_size)
+                x = j % int(1800/ self.tile_size) + (display_column * n_col) + (display_column * 100)
+                y = i % int(950/ self.tile_size)
                 if ground_scan[i,j] == 1:
-                    self.draw_tile((j,i), sf.BLACK)
+                    self.draw_tile((x,y), sf.BLACK)
                 elif ground_scan[i,j] == 2:
-                    self.draw_tile((j,i), sf.BLUE)
+                    self.draw_tile((x,y), sf.BLUE)
                 elif ground_scan[i,j] == 3:
-                    self.draw_tile((j,i), sf.GREEN)
+                    self.draw_tile((x,y), sf.GREEN)
         self.refresh()
         self.check_closed()
 
@@ -65,9 +68,9 @@ def part1(input):
     n_row, n_col = ground_scan.shape
 
     # Visualization
-    #frame = VisualizaGround(tile_size = 1, frame_rate=0)
-    #frame.set_title("Test draw")
-    #frame.set_font('Comic Sans MS', 30)
+    frame = VisualizaGround(width = 1800, height = 1000, tile_size = 1, frame_rate=0)
+    frame.set_title("Test draw")
+    frame.set_font('Comic Sans MS', 30)
 
     # Simulate water flow
     round_no = 0
@@ -124,7 +127,7 @@ def part1(input):
         #print('')
 
         # Visualize option 2: Draw frame
-        #frame.draw(ground_scan, f"Round: {round_no}")
+        frame.draw(ground_scan, f"Round: {round_no}")
 
         # progres tracking:
         if (round_no % 20 == 0):
