@@ -1,8 +1,9 @@
-import networkx as nx
-G = nx.Graph()
-G.add_node((1,2))
-G.add_node((9,3))
-G.add_edge((1,2),(9,3))
-print(G.nodes)
-print(nx.shortest_path_length(G,(1,2),(9,3)))
-print(nx.shortest_path_length(G,(1,2),(1,2)))
+a = 3 # 011
+b = 5 # 101
+print(a&b)
+print(b>a)
+print(int(b>a))
+print(int(b<a))
+x = 'abcd'
+print(x.startswith('ab'))
+print([1,2,3,4] == [1,3,3,4])
