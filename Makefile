@@ -6,7 +6,7 @@ test_param:
 help:
 	echo Run make on a BASH shell
 	echo Create new day code: make create dayname="01 day1_title"
-	echo delete day: make delete day=01
+	echo Delete day: make delete day=01
 
 create:
 	touch input/input$(word 1, $(dayname)).txt
