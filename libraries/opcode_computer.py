@@ -2,6 +2,10 @@ class OpcodeComputer:
     def __init__(self) -> None:
         self.mem = [0] * 4
     
+    # Set memory
+    def set_mem(self, mem):
+        self.mem = mem
+    
     # Run an instruction string, for example "addr 3 5 7"
     def run_instruction(self, instr_str):
         instruction = instr_str.split(' ')
