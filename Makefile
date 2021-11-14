@@ -18,6 +18,6 @@ create:
 delete:
 	echo Removing the following files: $(day)*.py ./input/input_test$(day).txt ./input/input$(day).txt 
 	@echo -n "Are you sure? [y/N] " && read ans && [ $${ans:-N} == y ]
-	rm ./input/input$(day).txt
-	rm ./input/input_test$(day).txt
+	rm ./input/input$(day)*.txt
+	rm ./input/input_test$(day)*.txt
 	rm $(day)*.py
