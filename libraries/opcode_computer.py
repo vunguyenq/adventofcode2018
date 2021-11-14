@@ -1,6 +1,6 @@
 class OpcodeComputer:
     def __init__(self) -> None:
-        self.mem = [0] * 4
+        self.mem = [0] * 6
     
     # Set memory
     def set_mem(self, mem):
